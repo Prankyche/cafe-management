@@ -44,8 +44,9 @@ public class CategoryServiceClass implements CategoryService {
     public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
         try{
             if ((!Strings.isBlank(filterValue) || !Strings.isEmpty(filterValue))&& filterValue.equalsIgnoreCase("true")){
-                
+                return new ResponseEntity<List<Category>>(categoryRepository.getAllCategory(),HttpStatus.OK);
             }
+            return new ResponseEntity<>(categoryRepository.findAll(),HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
