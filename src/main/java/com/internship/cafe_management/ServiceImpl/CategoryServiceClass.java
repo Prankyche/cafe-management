@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceClass implements CategoryService {
@@ -44,12 +45,36 @@ public class CategoryServiceClass implements CategoryService {
     public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
         try{
             if ((!Strings.isBlank(filterValue) || !Strings.isEmpty(filterValue))&& filterValue.equalsIgnoreCase("true")){
-                
+                return new ResponseEntity<List<Category>>(categoryRepository.getAllCategory(),HttpStatus.OK);
             }
+            return new ResponseEntity<>(categoryRepository.findAll(),HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
+        try{
+            if (jwtFilter.isAdmin()){
+                if(validateCategoryMap(requestMap,true)){
+                    Optional optional = categoryRepository.findById(Integer.parseInt(requestMap.get("id")));
+                    if (optional.isPresent()){
+                        categoryRepository.save(getCategoryFromMap(requestMap,true));
+                        return CafeUtils.getResponseEntity("Category updated successfully",HttpStatus.OK);
+                    }else{
+                        return CafeUtils.getResponseEntity("Category ID does not exist",HttpStatus.OK);
+                    }
+                }
+                return CafeUtils.getResponseEntity(CafeConstants.INVALID_DATA,HttpStatus.BAD_REQUEST);
+            }else{
+                return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED,HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean validateCategoryMap(Map<String, String> requestMap, boolean validateId) {
