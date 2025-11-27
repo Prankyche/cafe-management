@@ -71,7 +71,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/user/login",
                                 "/user/signup",
-                                "/user/forgotPassword"
+                                "/user/forgotPassword",
+                                "/user/checktoken"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

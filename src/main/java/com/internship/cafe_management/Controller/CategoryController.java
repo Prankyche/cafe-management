@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "/category")
+@CrossOrigin(origins = "http://localhost:4200")
 public interface CategoryController {
 
     @PostMapping(path = "/add")
