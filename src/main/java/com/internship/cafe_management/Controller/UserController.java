@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "/user")
-@CrossOrigin(origins = "http://localhost:4200")
 public interface UserController {
 
     @PostMapping(path = "/signup")

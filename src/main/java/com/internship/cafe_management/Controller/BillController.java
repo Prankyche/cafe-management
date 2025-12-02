@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "/bill")
-@CrossOrigin(origins = "http://localhost:4200")
+
 public interface BillController {
 
     @PostMapping(path = "/generateReport")

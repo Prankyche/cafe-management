@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping(path = "/product")
-@CrossOrigin(origins = "http://localhost:4200")
 public interface ProductController {
 
     @PostMapping(path = "/add")
